@@ -5,9 +5,9 @@ use strict;
 use vars qw( $VERSION );
 BEGIN { eval { require warnings } ? 'warnings'->import : ( $^W = 1 ) }
 
-require NEXT;
+use Waft 0.9907 ();
 
-$VERSION = '0.00_01';
+$VERSION = '0.01';
 $VERSION = eval $VERSION;
 
 $Waft::JS::Name = 'Waft.JS';
@@ -18,7 +18,7 @@ sub convert_text_part {
     my @text_parts
         = split /\b \Q$Waft::JS::Name\E \. /xms, $text_part;
 
-    my $code = $self->NEXT::convert_text_part( shift(@text_parts), $break );
+    my $code = $self->next( shift(@text_parts), $break );
 
     while ( @text_parts ) {
         my $text_part = shift @text_parts;
@@ -29,7 +29,7 @@ sub convert_text_part {
             $code .= q{$Waft::Self->output_js_make_url_script;};
         }
 
-        $code .= $self->NEXT::convert_text_part($text_part, $break);
+        $code .= $self->next($text_part, $break);
     }
 
     return $code;
